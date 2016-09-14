@@ -3,6 +3,7 @@ import React, {PropTypes} from 'react';
 export class ReactGoogleAutocomplete extends React.Component {
   static propTypes = {
     onPlaceSelected: PropTypes.func,
+    placeTypes: PropTypes.array
   }
 
   constructor(props) {
@@ -12,7 +13,7 @@ export class ReactGoogleAutocomplete extends React.Component {
 
   componentDidMount() {
     this.autocomplete = new google.maps.places.Autocomplete(this.refs.input, {
-      types: ['(cities)'],
+      types: this.props.placeTypes,
     });
 
     this.autocomplete.addListener('place_changed', this.onSelected.bind(this));
@@ -50,7 +51,7 @@ export class ReactCustomGoogleAutocomplete extends React.Component {
 
 	onChange(e) {
     if(e.target.value) {
-      this.service.getPlacePredictions({input: e.target.value, types: ['(cities)'],}, (predictions, status) => {
+      this.service.getPlacePredictions({input: e.target.value, types: this.props.placeTypes,}, (predictions, status) => {
         if (status === 'OK' && predictions && predictions.length > 0) {
           this.props.onOpen(predictions);
             console.log(predictions);
